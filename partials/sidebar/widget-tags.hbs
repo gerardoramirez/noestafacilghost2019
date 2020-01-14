@@ -2,7 +2,7 @@
   <h3 class='c-widget__title'>{{t 'Tags' }}</h3>
 
   <div class='c-tags'>
-    {{#get 'tags' limit='all'}}
+    {{#get 'tags' limit='4'}}
       {{#foreach tags}}
         <a href='{{ url }}'>{{ name }}</a>
       {{/foreach}}
