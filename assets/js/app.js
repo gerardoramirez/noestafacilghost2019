@@ -2,47 +2,82 @@ $(document).ready(function() {
 
   'use strict';
 
-  // =====================
-  // Homepage Layout
-  // =====================
-
-  $('.home-template .js-post-card-wrap:nth-of-type(2) .c-post-card').addClass('c-post-card--half');
+  $('body').addClass('js-enabled');
 
   // =====================
-  // Responsive videos
+  // Members subscription
   // =====================
 
-  $('.c-content').fitVids({
-    'customSelector': ['iframe[src*="ted.com"]']
+  // Parse the URL parameter
+  function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+  }
+
+  // Give the parameter a variable name
+  var action = getParameterByName('action');
+  var stripe = getParameterByName('stripe');
+
+  $(document).ready(function () {
+      if (action == 'subscribe') {
+        $('body').addClass('subscribe-success');
+      }
+
+      if (action == 'signup') {
+        window.location = '/signup/?action=checkout';
+      }
+
+      if (action == 'checkout') {
+        $('body').addClass('signup-success');
+      }
+
+      if (action == 'signin') {
+        $('body').addClass('signin-success');
+      }
+
+      if (stripe == 'success') {
+        $('body').addClass('checkout-success');
+      }
+
+      $('.c-notification__close').click(function () {
+        var uri = window.location.toString();
+
+        $(this).parent().addClass('closed');
+
+        if (uri.indexOf('?') > 0) {
+          var clean_uri = uri.substring(0, uri.indexOf('?'));
+          window.history.replaceState({}, document.title, clean_uri);
+        }
+      });
   });
 
   // =====================
-  // Toggle Disqus
+  // Koenig Gallery
   // =====================
+  var gallery_images = document.querySelectorAll('.kg-gallery-image img');
 
-  $('.js-load-disqus').click(function() {
-    $('.js-disqus').toggle();
+  gallery_images.forEach(function (image) {
+    var container = image.closest('.kg-gallery-image');
+    var width = image.attributes.width.value;
+    var height = image.attributes.height.value;
+    var ratio = width / height;
+    container.style.flex = ratio + ' 1 0%';
   });
 
   // =====================
-  // dropcap.js
+  // Decode HTML entities returned by Ghost translations
+  // Input: Plus d&#x27;articles
+  // Output: Plus d'articles
   // =====================
 
-  var dropcap_paragraph = $('.c-content p:eq(0)').text();
-  var dropcap_class = '<span class="c-dropcap">'+dropcap_paragraph.charAt(0)+'</span>';
-  $('.c-content p:eq(0)').html(dropcap_class + dropcap_paragraph.slice(1, dropcap_paragraph.length));
-
-  var dropcaps = document.querySelectorAll('.c-dropcap');
-  window.Dropcap.layout(dropcaps, 2);
-
-  // =====================
-  // Images zoom
-  // =====================
-
-  $('.c-post img').attr('data-action', 'zoom');
-
-  // If the image is inside a link, remove zoom
-  $('.c-post a img').removeAttr('data-action');
+  function decoding_translation_chars(string) {
+    return $('<textarea/>').html(string).text();
+  }
 
   // =====================
   // Off Canvas menu
@@ -64,17 +99,61 @@ $(document).ready(function() {
   });
 
   // =====================
+  // Responsive videos
+  // =====================
+
+  $('.c-content').fitVids({
+    'customSelector': [ 'iframe[src*="ted.com"]'          ,
+                        'iframe[src*="player.twitch.tv"]' ,
+                        'iframe[src*="dailymotion.com"]'  ,
+                        'iframe[src*="facebook.com"]'
+                      ]
+  });
+
+  // =====================
+  // Images zoom
+  // =====================
+
+  $('.c-post img').attr('data-action', 'zoom');
+
+  // If the image is inside a link, remove zoom
+  $('.c-post a img').removeAttr('data-action');
+
+  // =====================
+  // Clipboard URL Copy
+  // =====================
+
+  var clipboard = new ClipboardJS('.c-share__link--clipboard');
+
+  clipboard.on('success', function(e) {
+    var element = $(e.trigger);
+
+    element.addClass('tooltipped tooltipped-s');
+    element.attr('aria-label', clipboard_copied_text);
+
+    element.mouseleave(function() {
+      $(this).removeAttr('aria-label');
+      $(this).removeClass('tooltipped tooltipped-s');
+    });
+  });
+
+  // =====================
   // Search
   // =====================
 
   var search_field = $('.js-search-input'),
-      search_results = $('.js-search-result'),
+      search_results = $('.js-search-results'),
       toggle_search = $('.js-search-toggle'),
       search_result_template = "\
-        <div class='c-search-result__item'>\
-          <a class='c-search-result__title' href='{{link}}'>{{title}}</a>\
-          <span class='c-search-result__date'>{{pubDate}}</span>\
-        </div>";
+      <a href={{link}} class='c-search-result'>\
+        <div class='c-search-result__content'>\
+          <h3 class='c-search-result__title'>{{title}}</h3>\
+          <time class='c-search-result__date'>{{pubDate}}</time>\
+        </div>\
+        <div class='c-search-result__media'>\
+          <div class='c-search-result__image is-inview' style='background-image: url({{featureImage}})'></div>\
+        </div>\
+      </a>";
 
   toggle_search.click(function(e) {
     e.preventDefault();
@@ -88,8 +167,8 @@ $(document).ready(function() {
     }, 500);
   });
 
-  $('.c-search, .js-search-close').on('click keyup', function(event) {
-    if (event.target == this || event.target.className == 'js-search-close' || event.keyCode == 27) {
+  $('.c-search, .js-search-close, .js-search-close .icon').on('click keyup', function(event) {
+    if (event.target == this || event.target.className == 'js-search-close' || event.target.className == 'icon' || event.keyCode == 27) {
       $('.c-search').removeClass('is-active');
     }
   });
@@ -97,10 +176,9 @@ $(document).ready(function() {
   search_field.ghostHunter({
     results: search_results,
     onKeyUp         : true,
-    info_template   : "<h4 class='c-search-result__head'>Number of results found: {{amount}}</h4>",
     result_template : search_result_template,
     zeroResultsInfo : false,
-    includepages 	: true,
+    displaySearchInfo: false,
     before: function() {
       search_results.fadeIn();
     }
@@ -125,7 +203,7 @@ $(document).ready(function() {
     $.ajax({
       url: request_next_link,
       beforeSend: function() {
-        $load_posts_button.text('Loading');
+        $load_posts_button.text(decoding_translation_chars(pagination_loading_text));
         $load_posts_button.addClass('c-btn--loading');
       }
     }).done(function(data) {
@@ -139,7 +217,7 @@ $(document).ready(function() {
         removeClassAfterAnimation: true
       });
 
-      $load_posts_button.text('More Stories');
+      $load_posts_button.text(decoding_translation_chars(pagination_more_posts_text));
       $load_posts_button.removeClass('c-btn--loading');
 
       pagination_next_page_number++;

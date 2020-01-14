@@ -33,7 +33,7 @@
       flex: 3;
       padding-right: double($base-spacing-unit);
       margin-right: double($base-spacing-unit);
-      border-right: 1px solid $color-white;
+      border-right: 1px solid $color-border;
     }
   }
 
@@ -42,6 +42,7 @@
     width: quadruple($base-spacing-unit) + double($base-spacing-unit);
     height: quadruple($base-spacing-unit) + double($base-spacing-unit);
     border-radius: 100%;
+    border: quarter($base-spacing-unit) solid $color-white;
 
     @include mq($until: tablet) {
       margin: 0 auto;
@@ -69,6 +70,7 @@
   }
 
   &-item {
+    color: $color-gray;
     display: inline-block;
     font-size: $font-size-tiny;
     text-transform: uppercase;
@@ -77,6 +79,7 @@
   }
 
   &-icon {
+    fill: $color-gray;
     vertical-align: bottom;
     transition: $global-transition;
 

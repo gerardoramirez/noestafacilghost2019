@@ -12,22 +12,41 @@
     flex-wrap: wrap;
 
     .form-group {
-      flex: 8;
-      margin-right: $base-spacing-unit;
+      width: 100%;
+      display: flex;
     }
 
     &__btn {
-      flex: 2;
+      flex: 3;
     }
   }
 
   &__input[type='email'] {
     padding-left: 0;
     border: 0;
+    min-width: 1px;
     border-bottom: 1px solid $color-border;
 
     @include mq($from: desktop) {
       margin: 0;
     }
+
+    &:focus {
+      border-color: $color-border;
+    }
+  }
+
+  .u-alert {
+    display: none;
+  }
+
+  &.loading .c-btn {
+    @extend .c-btn--loading;
+  }
+
+  &.success .u-alert--success,
+  &.invalid .u-alert--invalid,
+  &.error   .u-alert--error  {
+    display: block;
   }
 }

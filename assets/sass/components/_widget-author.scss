@@ -1,5 +1,5 @@
 /*------------------------------------*\
-  Components > Widge Author
+  Components > Widget Author
 \*------------------------------------*/
 
 .c-widget-author {
@@ -12,9 +12,10 @@
   &__image {
     margin: 0 auto;
     display: block;
-    width: quadruple($base-spacing-unit);
-    height: quadruple($base-spacing-unit);
+    width: quadruple($base-spacing-unit) + double($base-spacing-unit);
+    height: quadruple($base-spacing-unit) + double($base-spacing-unit);
     border-radius: 100%;
+    border: quarter($base-spacing-unit) solid $bg-gray;
   }
 
   &__title {

@@ -7,7 +7,7 @@ $off-canvas-width: 300px;
 .c-off-canvas-toggle {
   position: absolute;
   top: double($base-spacing-unit) + half($base-spacing-unit);
-  right: $base-spacing-unit;
+  right: $base-spacing-unit + quarter($base-spacing-unit);
   z-index: 10;
   height: 24px;
   width: 24px;
@@ -22,7 +22,7 @@ $off-canvas-width: 300px;
     left: 0;
     height: 1px;
     width: 25px;
-    background: $color-black;
+    background: $color-text;
     cursor: pointer;
 
     &:before,
@@ -45,7 +45,7 @@ $off-canvas-width: 300px;
       &:after {
         position: relative;
         visibility: visible;
-        background: $color-black;
+        background: $color-text;
       }
 
       &:before {
@@ -67,13 +67,6 @@ $off-canvas-width: 300px;
   }
 }
 
-// prevent horizontal scroll during off-canvas
-
-html,
-body {
-  overflow-x: hidden;
-}
-
 .c-off-canvas-content {
   @include mq($from: tablet) {
     position: relative;
@@ -81,16 +74,22 @@ body {
 }
 
 @include mq($until: tablet) {
+  // prevent horizontal scroll during off-canvas
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
   .c-off-canvas-content {
     position: fixed;
     top: 0;
-    right: 0;
+    right: - quarter($base-spacing-unit);
     z-index: 1;
     width: $off-canvas-width;
     height: 100vh;
     overflow-y: auto;
     padding: double($base-spacing-unit) (double($base-spacing-unit) + half($base-spacing-unit));
-    background-color: $bg-white;
+    background-color: $bg-color;
     transform: translate3d($off-canvas-width, 0, 0);
 
     @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {

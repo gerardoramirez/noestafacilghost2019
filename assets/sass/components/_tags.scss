@@ -3,8 +3,10 @@
 \*------------------------------------*/
 
 .c-tags {
+  overflow: hidden;
+
   a {
-    display: inline-block;
+    float: left;
     padding: half($base-spacing-unit) ($base-spacing-unit + quarter($base-spacing-unit));
     margin: 0 half($base-spacing-unit) half($base-spacing-unit) 0;
 
@@ -22,7 +24,7 @@
     }
 
     @include attention() {
-      color: $color-black;
+      color: lighten($color-gray, 10%);
       text-decoration: none;
     }
   }

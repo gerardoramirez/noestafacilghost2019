@@ -1,22 +1,31 @@
-<div class='o-grid__col o-grid__col--center o-grid__col--4-4-s o-grid__col--1-3-l'>
-  <button class='c-btn c-btn--full js-load-disqus'>Comments</button>
+<div class='o-grid'>
+  <div class='o-grid__col o-grid__col--center o-grid__col--4-4-s o-grid__col--1-3-l'>
+    <button class='c-btn c-btn--full js-load-disqus' onclick='disqus(); return false;'>{{t 'Comments' }}</button>
+  </div>
+
+  <hr>
 </div>
 
-<hr>
+<div id='disqus_thread'></div>
+<script>
+  var disqus_shortname = 'aspirethemes-demos'; // required: replace `aspirethemes-demos` with your Disqus shortname
 
-<div class='disqus u-hidden js-disqus'>
-  <div id='disqus_thread'></div>
-  <script type='text/javascript'>
-    var disqus_shortname = 'aspirethemes-demos'; // required: replace example with your forum shortname
-    var disqus_identifier = 'ghost-{{comment_id}}';
+  // DON'T EDIT BELOW THIS LINE
+  var disqus_config = function () {
+    this.page.url ='{{url absolute="true"}}'
+    this.page.identifier = 'ghost-{{comment_id}}';
+  };
 
-    // DON'T EDIT BELOW THIS LINE
-    (function() {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-  </script>
-  <noscript>Please enable JavaScript to view the <a href='http://disqus.com/?ref_noscript'>comments powered by Disqus.</a></noscript>
-  <a href='http://disqus.com' class='dsq-brlink'>comments powered by <span class='logo-disqus'>Disqus</span></a>
-</div>
+  function disqus() {
+    var d = document, s = d.createElement('script');
+
+    s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+
+    document.getElementsByClassName('js-load-disqus')[0].setAttribute('disabled', '');
+    document.getElementsByClassName('js-load-disqus')[0].classList.add('c-btn--disabled');
+  }
+</script>
+<noscript>Please enable JavaScript to view the <a href='https://disqus.com/?ref_noscript' rel='nofollow'>comments powered by Disqus.</a></noscript>

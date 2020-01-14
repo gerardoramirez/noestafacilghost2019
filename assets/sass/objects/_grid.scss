@@ -6,13 +6,15 @@ $grid-width: 1200px;
 $grid-gutter: $base-spacing-unit;
 
 .o-grid {
-  display: flex;
-  flex-wrap: wrap;
-
   margin: 0 auto;
   max-width: $grid-width;
 
   @include clearfix();
+
+  @include mq($from: tablet) {
+    display: flex;
+    flex-wrap: wrap;
+  }
 
   .o-grid {
     margin-right: - $grid-gutter;

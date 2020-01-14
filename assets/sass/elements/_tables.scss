@@ -27,3 +27,9 @@ table {
     border-top: 2px solid $color-border;
   }
 }
+
+.responsive-table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}

@@ -1,10 +1,10 @@
 {{#post}}
-  {{#author}}
+  {{#primary_author}}
     <div class='c-widget c-widget-author'>
 
       {{#if profile_image}}
         <div class='c-widget-author__media'>
-          <a href='{{ url }}' aria-hidden='true' role='presentation' tabindex='-1'>
+          <a href='{{ url }}' aria-hidden='true' tabindex='-1'>
             <img src='{{ profile_image }}' alt='{{ name }}' class='c-widget-author__image' role='presentation'>
           </a>
         </div>
@@ -20,5 +20,5 @@
       </div>
 
     </div>
-  {{/author}}
+  {{/primary_author}}
 {{/post}}

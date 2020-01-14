@@ -5,22 +5,28 @@
 .c-teaser {
   display: flex;
   align-items: center;
+  line-height: 1;
   padding-left: $base-spacing-unit;
+  padding-top: $base-spacing-unit;
 
   @include mq(tablet, desktop) {
     display: block;
     padding-left: 0;
+    line-height: inherit;
   }
 
   &:not(:last-child) {
     padding-bottom: $base-spacing-unit;
-    margin-bottom: $base-spacing-unit;
     border-bottom: 1px solid $color-border;
 
     @include mq(tablet, desktop) {
+      padding-top: half($base-spacing-unit);
       padding-bottom: half($base-spacing-unit) + $base-spacing-unit;
-      margin-bottom: $base-spacing-unit - quarter($base-spacing-unit);
     }
+  }
+
+  &:first-of-type {
+    padding-top: 0;
   }
 
   &:before {
@@ -28,6 +34,7 @@
     content: counter(widget) '. ';
     position: relative;
     left: - $base-spacing-unit;
+    line-height: 1;
     font-size: $font-size-base;
     font-style: italic;
     font-family: $font-serif;
@@ -61,11 +68,11 @@
     background-color: $bg-gray;
     transition: all $global-transition ease-in-out;
 
-    &.js-fadein {
+    .js-enabled &.js-fadein {
       opacity: 0;
     }
 
-    &.is-inview {
+    .js-enabled &.is-inview {
       opacity: 1;
     }
 
@@ -83,12 +90,20 @@
   }
 
   &__title {
-    margin-bottom: 0;
+    margin-bottom: half($base-spacing-unit);
     font-size: $font-size-small;
     font-weight: $font-weight-medium;
 
     @include mq(tablet, desktop) {
-      margin-bottom: half($base-spacing-unit);
+      margin-bottom: 0;
     }
+  }
+
+  &__date {
+    line-height: 1;
+    font-size: $font-size-tiny;
+    color: $color-gray;
+    text-transform: uppercase;
+    letter-spacing: $global-letter-spacing;
   }
 }

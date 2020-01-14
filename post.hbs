@@ -9,17 +9,20 @@
     <div class='o-grid__col o-grid__col--2-3-m'>
       <article class='c-{{ post_class }}'>
 
+      {{#if access}}
         <div class='c-content'>
           {{ content }}
         </div>
 
         <div class='o-grid'>
-          <div class='o-grid__col o-grid__col--4-4-s o-grid__col--2-4-m o-grid__col--3-4-l'>
-            <div class='c-tags'>
-              {{ tags separator='' }}
-            </div>
+          <div class='o-grid__col o-grid__col--4-4-s o-grid__col--4-4-m o-grid__col--2-4-l'>
+            {{#if tags}}
+              <div class='c-tags'>
+                {{ tags separator='' }}
+              </div>
+            {{/if}}
           </div>
-          <div class='o-grid__col o-grid__col--4-4-s o-grid__col--1-4-m o-grid__col--1-4-l'>
+          <div class='o-grid__col o-grid__col--4-4-s o-grid__col--4-4-m o-grid__col--2-4-l'>
             {{> share }}
           </div>
         </div>
@@ -27,6 +30,9 @@
         <hr>
 
         {{> disqus}}
+      {{else}}
+        {{> post-upgrade-cta }}
+      {{/if}}
 
       </article>
 
